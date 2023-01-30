@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequiredArgsConstructor
 public class OrderSimpleApicController {
@@ -28,14 +30,22 @@ public class OrderSimpleApicController {
         }
         return all;
     }
-    @GetMapping("/api/v2/simple-orders")
+    @GetMapping("/api/v2/simple-orders") // 엔티티 DTO 변환
     public List<SimpleOrderDto>order2(){
         //ORDER 2개
         //N + 1문제
         List<Order> orders = orderRepository.findAllByCriteria(new OrderSearch());
         List<SimpleOrderDto> result = orders.stream()
                 .map(o -> new SimpleOrderDto(o))
-                .collect(Collectors.toList());
+                .collect(toList());
+        return result;
+    }
+    @GetMapping("/api/v3/simple-orders") // 엔티티 DTO 변환 fetch, join 최적화
+    public List<SimpleOrderDto> ordersV3() {
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        List<SimpleOrderDto> result = orders.stream()
+                .map(o -> new SimpleOrderDto(o))
+                .collect(toList());
         return result;
     }
     @Data
