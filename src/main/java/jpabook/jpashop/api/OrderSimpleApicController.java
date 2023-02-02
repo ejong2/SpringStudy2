@@ -3,6 +3,7 @@ package jpabook.jpashop.api;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.dto.SimpleOrderDto;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
 import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
@@ -52,20 +53,5 @@ public class OrderSimpleApicController {
     @GetMapping("/api/v4/simple-orders")
     public List<OrderSimpleQueryDto> ordersV4() {
         return orderSimpleQueryRepository.findOrderDtos();
-    }
-    @Data
-    static class SimpleOrderDto{
-        private Long orderId;
-        private String name;
-        private LocalDateTime orderDate;
-        private OrderStatus orderStatus;
-        private Address address;
-        public SimpleOrderDto(Order order){
-            orderId = order.getId();
-            name = order.getMember().getName(); //LAZY 초기화
-            orderDate = order.getOrderDate();
-            orderStatus = order.getStatus();
-            address = order.getDelivery().getAddress(); //LAZY 초기화
-        }
     }
 }

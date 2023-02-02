@@ -1,4 +1,4 @@
-package jpabook.jpashop.controller;
+package jpabook.jpashop.dto;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
